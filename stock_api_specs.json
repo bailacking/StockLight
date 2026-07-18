@@ -1,0 +1,275 @@
+{
+  "stock_code": "000100",
+  "test_time": "2026-07-16 23:54:49",
+  "interfaces": [
+    {
+      "name": "腾讯财经",
+      "available": true,
+      "error": null,
+      "specs": {
+        "base_url": "http://qt.gtimg.cn/q",
+        "code_format": "sh600xxx/sz000xxx",
+        "rate_limit": "建议1次/秒",
+        "encoding": "gbk",
+        "response_format": "特殊分隔符(~)",
+        "supported_markets": [
+          "A股",
+          "港股",
+          "美股",
+          "加密货币"
+        ],
+        "available_data_types": [
+          {
+            "type": "实时行情",
+            "description": "最新价、成交量、买卖五档等市场快照",
+            "fields": [
+              "股票代码",
+              "股票名称",
+              "当前价格",
+              "昨收价",
+              "开盘价",
+              "成交量",
+              "成交额",
+              "买一价",
+              "买一量",
+              "卖一价",
+              "卖一量",
+              "买二价",
+              "买二量",
+              "卖二价",
+              "卖二量",
+              "买三价",
+              "买三量",
+              "卖三价",
+              "卖三量",
+              "买四价"
+            ],
+            "tested": true
+          },
+          {
+            "type": "盘口分析",
+            "description": "大单和小单的买卖力量对比",
+            "fields": [
+              "内外盘数据",
+              "大单买卖量"
+            ]
+          },
+          {
+            "type": "K线数据",
+            "description": "历史行情数据，支持日线、周线、月线",
+            "endpoint": "https://ifzq.gtimg.cn/appstock/app/fqkline/get",
+            "fields": [
+              "日期",
+              "开盘价",
+              "收盘价",
+              "最高价",
+              "最低价",
+              "成交量",
+              "成交额"
+            ],
+            "tested": true
+          },
+          {
+            "type": "简要信息",
+            "description": "股票基础信息和关键指标",
+            "fields": [
+              "市值",
+              "市盈率",
+              "市净率"
+            ]
+          }
+        ],
+        "limitations": [
+          "非官方正式API，稳定性可能随腾讯服务调整而变化",
+          "历史K线数据可能有限"
+        ]
+      }
+    },
+    {
+      "name": "新浪财经",
+      "available": true,
+      "error": null,
+      "specs": {
+        "base_url": "http://hq.sinajs.cn/list",
+        "code_format": "sh600xxx/sz000xxx",
+        "rate_limit": "建议1.5秒间隔",
+        "encoding": "gbk",
+        "response_format": "逗号分隔CSV",
+        "supported_markets": [
+          "A股",
+          "港股",
+          "美股"
+        ],
+        "available_data_types": [
+          {
+            "type": "实时行情",
+            "description": "最新价、成交量、买卖盘口等",
+            "fields": [
+              "股票名称",
+              "开盘价",
+              "昨收价",
+              "当前价",
+              "最高价",
+              "最低价",
+              "买一价",
+              "卖一价",
+              "成交量",
+              "成交额"
+            ],
+            "tested": false,
+            "test_error": "返回空数据"
+          },
+          {
+            "type": "历史K线",
+            "description": "支持分钟K线（5/10/30/60分钟）和日线，最多1023个数据点",
+            "endpoint": "http://money.finance.sina.com.cn/quotes_service/api/json_v2.php/CN_MarketData.getKLineData",
+            "fields": [
+              "day",
+              "open",
+              "high",
+              "low",
+              "close",
+              "volume",
+              "ma_price5",
+              "ma_volume5"
+            ],
+            "tested": true
+          },
+          {
+            "type": "行情图片",
+            "description": "K线图表图片",
+            "endpoint": "http://image.sinajs.cn/newchart/daily/n/",
+            "formats": [
+              "日线图",
+              "分时图",
+              "周线图",
+              "月线图"
+            ]
+          },
+          {
+            "type": "分价数据",
+            "description": "指定日期范围内的股票分价表",
+            "endpoint": "http://market.finance.sina.com.cn/pricehis.php"
+          },
+          {
+            "type": "历史成交明细",
+            "description": "指定日期的成交明细数据（XLS格式）",
+            "endpoint": "http://market.finance.sina.com.cn/downxls.php"
+          }
+        ],
+        "limitations": [
+          "历史股价数据最多1023个数据节点",
+          "周线月线需自行计算",
+          "无法获取未复权数据"
+        ]
+      }
+    },
+    {
+      "name": "东方财富",
+      "available": true,
+      "error": null,
+      "specs": {
+        "base_url": "https://push2.eastmoney.com/api/qt/stock/get",
+        "code_format": "secid=1.600xxx/0.000xxx",
+        "rate_limit": "建议1次/秒",
+        "encoding": "utf-8",
+        "response_format": "JSON",
+        "supported_markets": [
+          "A股",
+          "港股"
+        ],
+        "available_data_types": [
+          {
+            "type": "实时行情",
+            "description": "最新价、成交量等实时数据",
+            "fields": [
+              "买一价",
+              "卖一价",
+              "买一量",
+              "卖一量",
+              "成交额",
+              "换手率",
+              "市盈率",
+              "股票代码",
+              "股票名称",
+              "当前价",
+              "成交量",
+              "开盘价",
+              "昨收价",
+              "最高价",
+              "最低价",
+              "市净率"
+            ],
+            "tested": true
+          },
+          {
+            "type": "财务数据",
+            "description": "上市公司各季度财务报表数据",
+            "fields": [
+              "营业收入",
+              "净利润",
+              "每股收益",
+              "净资产收益率"
+            ],
+            "tested": false,
+            "test_error": "财务数据为空"
+          },
+          {
+            "type": "龙虎榜",
+            "description": "龙虎榜异动数据，营业部席位信息",
+            "fields": [
+              "上榜原因",
+              "买卖席位",
+              "成交金额"
+            ],
+            "tested": false,
+            "test_error": "龙虎榜数据为空"
+          },
+          {
+            "type": "融资融券",
+            "description": "融资融券数据",
+            "fields": [
+              "融资余额",
+              "融券余额",
+              "融资买入额"
+            ],
+            "tested": false,
+            "test_error": "融资融券数据为空"
+          },
+          {
+            "type": "大宗交易",
+            "description": "大宗交易数据",
+            "fields": [
+              "成交价格",
+              "成交数量",
+              "成交金额",
+              "折价率"
+            ]
+          },
+          {
+            "type": "股东户数",
+            "description": "股东人数变化",
+            "fields": [
+              "股东户数",
+              "环比变化"
+            ]
+          },
+          {
+            "type": "解禁数据",
+            "description": "股票解禁信息",
+            "fields": [
+              "解禁日期",
+              "解禁数量",
+              "解禁比例"
+            ]
+          }
+        ],
+        "limitations": [
+          "反爬严格：每秒超过5次、1分钟超过200次、5分钟超过300次可能被封IP",
+          "需要设置正确的User-Agent"
+        ]
+      }
+    }
+  ],
+  "last_field_test_time": "2026-07-16 23:54:49"
+}
