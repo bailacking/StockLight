@@ -1,8 +1,13 @@
 # StockLight — AI Agent 快速指南
 
-## 项目简介
+## 项目概述
 
-轻量级 A 股行情分析工具。Python 采集 → 浏览器展示（纯 HTML+CSS+JS）。
+- **项目名称**：StockLight
+- **项目定位**：轻量级 A 股行情分析工具，Python 采集 → 浏览器展示（纯 HTML+CSS+JS）
+- **GitHub**：https://github.com/bailacking/StockLight
+- **默认分支**：`main`
+- **许可证**：MIT
+- **项目状态**：全部功能已实现，61 个单元测试通过，CI/CD 通过
 
 ## 核心数据流
 
@@ -16,7 +21,29 @@ preprocess.py → web/data/summary.json + web/data/kline/{code}.json
 start_server.py → 浏览器 (0.0.0.0:8000)
 ```
 
-## 关键文件
+## 开发指引
+
+### 环境要求
+
+- Python 3.10+，`requests>=2.25.0`，`pytest>=7.0`，`ruff>=0.6.0`
+- 前端：纯原生，**无** Vue/React/jQuery
+- 数据源：腾讯财经（主）+ 新浪财经（备）
+- 无数据库，无用户系统
+
+### 常用命令
+
+| 命令 | 用途 |
+|---|---|
+| `ruff check scripts/ tests/ server/start_server.py` | 代码检查（lint） |
+| `pytest tests/ -v` | 运行全部测试 |
+| `python scripts/kline_update.py --full` | 全量采集日 K |
+| `python scripts/kline_update.py --incremental` | 增量采集日 K |
+| `python scripts/fetch_data.py --names` | 采集股票名称 |
+| `python scripts/fetch_data.py --realtime` | 采集实时行情 |
+| `python scripts/preprocess.py` | 预处理生成前端 JSON |
+| `python server/start_server.py` | 启动 HTTP 服务（0.0.0.0:8000） |
+
+### 关键文件
 
 | 文件 | 作用 |
 |---|---|
@@ -39,12 +66,14 @@ start_server.py → 浏览器 (0.0.0.0:8000)
 | `web/css/style.css` | 样式参考（已内联至 HTML） |
 | `stock_api_specs.json` | 数据源接口规格 |
 | `codes.txt` | 3199 条股票代码 |
+| `启动程序.bat` | 根目录集成菜单（启动服务/初始化/更新） |
 | `CHANGELOG.md` | 版本更新日志 |
 | `CONTRIBUTING.md` | 贡献指南 |
 | `SECURITY.md` | 安全策略 |
 | `StockLight.md` | **完整工程规格说明书** |
+| `AGENT.md` | **本文件 — AI 助手快速指南** |
 
-## 批处理脚本（server/）
+### 批处理脚本（server/）
 
 | 脚本 | 用途 |
 |---|---|
@@ -56,12 +85,12 @@ start_server.py → 浏览器 (0.0.0.0:8000)
 | `获取实时行情.bat` | 仅采集实时行情 |
 | `预处理数据.bat` | 仅预处理 |
 
-## 关键依赖
+## GitHub 协作
 
-- Python 3.10+, `requests>=2.25.0`, `pytest>=7.0`, `ruff>=0.6.0`
-- 前端：纯原生，**无** Vue/React/jQuery
-- 数据源：腾讯财经（主）+ 新浪财经（备）
-- 无数据库，无用户系统
+- **远程仓库**：`origin` → `https://github.com/bailacking/StockLight.git`
+- **提交规范**：使用语义化提交，如 `feat:` / `fix:` / `docs:` / `refactor:` / `test:`
+- **推送规则**：先 `git pull` 同步，再 `git push`
+- **CI/CD**：推送到 `main` 自动触发 lint + 矩阵测试（Python 3.10~3.13）
 
 ## ⚠️ 操作规则（必须遵守）
 
@@ -70,3 +99,4 @@ start_server.py → 浏览器 (0.0.0.0:8000)
 3. **修改前询问** — 创建或修改文件前先询问用户，等用户说"确认执行"再动手
 4. **大规模改动** — 不好改的地方就扩大范围重写；耗时长时实时告知当前进度
 5. **版本管理** — 未经用户确认，不得擅自修改版本号。新功能完成后询问用户：插入工程文档（StockLight.md）还是列入版本记录
+6. **及时推送到 GitHub** — 每次改动完成后及时 `git add → git commit → git push`
