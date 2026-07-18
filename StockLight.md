@@ -8,8 +8,8 @@
 - **前端形态**：纯 HTML + CSS + JavaScript，不引入 Vue、React 等前端框架。
 - **访问方式**：支持本机浏览器访问，也支持同一局域网内手机浏览器访问。
 - **Python 版本**：3.10+
-- **基础依赖**：`requests>=2.25.0`
-- **项目状态**：全部代码已实现并通过验证，文档同步更新。
+- **基础依赖**：`requests>=2.25.0`、`pytest>=7.0`、`ruff>=0.6.0`
+- **项目状态**：全部功能已实现，61 个单元测试通过，CI/CD 通过（lint + 测试）。
 
 当前磁盘实况：
 
@@ -22,7 +22,13 @@
 | `.gitignore` | ✓ | Git 忽略规则 |
 | `stock_api_specs.json` | ✓ | 数据源接口规格（腾讯/新浪/东方财富） |
 | `codes.txt` | ✓ | 3199 条股票代码，每行一个 |
-| `requirements.txt` | ✓ | 依赖清单：`requests>=2.25.0` |
+| `requirements.txt` | ✓ | 依赖清单：`requests`、`pytest`、`ruff` |
+| `pyproject.toml` | ✓ | Python 项目元数据 + ruff/pytest 配置 |
+| `.github/workflows/python-app.yml` | ✓ | GitHub Actions CI/CD（lint + 矩阵测试） |
+| `tests/` | ✓ | 61 个单元测试（pytest） |
+| `CHANGELOG.md` | ✓ | 版本更新日志 |
+| `CONTRIBUTING.md` | ✓ | 贡献指南 |
+| `SECURITY.md` | ✓ | 安全策略 |
 | `启动程序.bat` | ✓ | 集成菜单：启动服务/全量初始化/日常更新/分步操作 |
 | `scripts/stocklight/` | ✓ | 公共模块：`__init__.py` + `config.py` + `utils.py` |
 | `scripts/kline_update.py` | ✓ | 日 K 采集（`--full`/`--incremental`） |
@@ -60,6 +66,19 @@ StockLight/
 ├─ stock_api_specs.json           # 数据源接口规格（腾讯、新浪、东方财富的可用性及限制）
 ├─ codes.txt                      # 每行一个 6 位股票代码，约 3199 条
 ├─ requirements.txt               # Python 依赖清单
+├─ pyproject.toml                 # 项目元数据 + ruff/pytest 配置
+├─ CHANGELOG.md                   # 版本更新日志
+├─ CONTRIBUTING.md                # 贡献指南
+├─ SECURITY.md                    # 安全策略
+│
+├─ .github/workflows/             # GitHub Actions CI/CD
+│  └─ python-app.yml              #   lint + 矩阵测试（Python 3.10–3.13）
+│
+├─ tests/                         # 单元测试
+│  ├─ conftest.py                 #   测试路径配置
+│  ├─ test_config.py              #   配置测试（15 用例）
+│  ├─ test_preprocess.py          #   预处理测试（12 用例）
+│  └─ test_utils.py               #   工具函数测试（34 用例）
 │
 ├─ scripts/                       # 数据采集与处理模块
 │  ├─ stocklight/                 # 公共模块，消除各脚本重复代码
@@ -261,7 +280,7 @@ PC 浏览器 / 局域网手机浏览器
 - 仅包含单只股票数据，进入详情页时按需加载。
 - `kline` 数组保留最近 260 个交易日数据。
 - `ma5`/`ma10`/`ma20`/`ma60` 不足周期时为 `null`。
-- `rsi6` 在 `preprocess.py` 中计算但当前不写入 JSON。
+- `rsi6` 作为内部函数保留，当前未输出到 JSON。
 
 ## 5. 模块功能规格
 
@@ -635,9 +654,14 @@ CLI 子命令：`--names`、`--realtime`，可组合使用
   - 所有脚本必须使用相对路径或 `scripts/stocklight/config.py` 配置
   - 前端页面必须通过 HTTP 地址访问，不支持直接双击打开 HTML
 
-## 8. 变更记录
+## 8. 版本记录
 
-| 日期 | 变更内容 |
-|---|---|
-| 2026-07-18 | 天才王大帅完成了 StockLight V1.0 版本 |
-| | *我本想征服市场，结果征服了 3199 个 CSV 文件。胜利嘛，全看你怎么定义。* |
+| 日期 | 版本 | 变更内容 |
+|---|---|---|---|
+| 2026-07-18 | v1.0 | 完成 StockLight V1.0 初始版本 |
+| 2026-07-18 | v1.1 | 新增 61 个单元测试（pytest），覆盖 utils/config/preprocess |
+| 2026-07-18 | v1.1 | 新增 GitHub Actions CI/CD，自动 lint + 矩阵测试 |
+| 2026-07-18 | v1.1 | 新增 pyproject.toml 项目元数据配置 |
+| 2026-07-18 | v1.1 | 新增 ruff 代码检查，修复 25 个 lint 问题 |
+| 2026-07-18 | v1.1 | 重构 Git 历史为 6 个语义化提交 |
+| 2026-07-18 | v1.1 | 新增社区文件（CONTRIBUTING / CHANGELOG / SECURITY） |

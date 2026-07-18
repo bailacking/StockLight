@@ -25,6 +25,9 @@ start_server.py → 浏览器 (0.0.0.0:8000)
 | `scripts/preprocess.py` | 计算 MA5/10/20/60、振幅、RSI6 → 生成 JSON |
 | `scripts/stocklight/config.py` | 路径/接口/限速配置 |
 | `scripts/stocklight/utils.py` | HTTP 请求/CSV 读写/格式化工具 |
+| `pyproject.toml` | 项目元数据 + ruff/pytest 配置 |
+| `.github/workflows/python-app.yml` | CI/CD：lint + 矩阵测试 |
+| `tests/` | 61 个单元测试（test_config / test_preprocess / test_utils） |
 | `server/start_server.py` | HTTP 服务（含 Cache-Control） |
 | `web/index.html` | 股票列表主页（筛选/排序/分页/深色模式） |
 | `web/detail.html` | 个股详情页（K 线图/十字光标/滚动） |
@@ -36,6 +39,9 @@ start_server.py → 浏览器 (0.0.0.0:8000)
 | `web/css/style.css` | 样式参考（已内联至 HTML） |
 | `stock_api_specs.json` | 数据源接口规格 |
 | `codes.txt` | 3199 条股票代码 |
+| `CHANGELOG.md` | 版本更新日志 |
+| `CONTRIBUTING.md` | 贡献指南 |
+| `SECURITY.md` | 安全策略 |
 | `StockLight.md` | **完整工程规格说明书** |
 
 ## 批处理脚本（server/）
@@ -52,7 +58,7 @@ start_server.py → 浏览器 (0.0.0.0:8000)
 
 ## 关键依赖
 
-- Python 3.10+, `requests>=2.25.0`
+- Python 3.10+, `requests>=2.25.0`, `pytest>=7.0`, `ruff>=0.6.0`
 - 前端：纯原生，**无** Vue/React/jQuery
 - 数据源：腾讯财经（主）+ 新浪财经（备）
 - 无数据库，无用户系统
