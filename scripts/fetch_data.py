@@ -10,15 +10,22 @@ from datetime import datetime
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from stocklight.config import (
-    CODES_FILE, STOCKS_META_FILE, STOCKS_REALTIME_FILE,
+    CODES_FILE,
     LOGS_DIR,
-    META_COLUMNS, REALTIME_COLUMNS,
-    TENCENT_REALTIME_URL, TENCENT_RATE_LIMIT,
+    META_COLUMNS,
+    REALTIME_COLUMNS,
+    STOCKS_META_FILE,
+    STOCKS_REALTIME_FILE,
+    TENCENT_RATE_LIMIT,
+    TENCENT_REALTIME_URL,
 )
 from stocklight.utils import (
-    http_get, ensure_dir, write_csv, read_csv,
-    safe_float, safe_int, setup_logger,
-    get_market_prefix, confirm_y,
+    confirm_y,
+    get_market_prefix,
+    http_get,
+    safe_float,
+    setup_logger,
+    write_csv,
 )
 
 
@@ -64,7 +71,8 @@ def do_names():
     total = len(codes)
     print(f"\n【采集股票名称】共 {total} 只")
     if not _yes_mode and not confirm_y("按 Y 开始采集"):
-        print("已取消"); return
+        print("已取消")
+        return
     logger.info(f"开始采集股票名称，共{total}只")
 
     batch_size = 100
@@ -96,7 +104,8 @@ def do_realtime():
     total = len(codes)
     print(f"\n【采集实时行情】共 {total} 只")
     if not _yes_mode and not confirm_y("按 Y 开始采集"):
-        print("已取消"); return
+        print("已取消")
+        return
     logger.info(f"开始采集实时行情，共{total}只")
 
     batch_size = 100

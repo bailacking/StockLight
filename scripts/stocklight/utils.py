@@ -1,12 +1,14 @@
 import csv
-import os
-import requests
 import logging
-import io
+import os
+
+import requests
 
 from .config import (
-    HTTP_HEADERS, REQUEST_RETRIES, REQUEST_TIMEOUT,
-    TENCENT_RATE_LIMIT, SINA_RATE_LIMIT, rate_limit,
+    HTTP_HEADERS,
+    REQUEST_RETRIES,
+    REQUEST_TIMEOUT,
+    rate_limit,
 )
 
 

@@ -8,21 +8,34 @@ import argparse
 import json
 import os
 import sys
-from datetime import datetime, date
+from datetime import date
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from stocklight.config import (
-    CODES_FILE, DATE_RAW_DIR, UPDATE_LOG, KLINE_COLUMNS,
-    TENCENT_KLINE_URL, SINA_KLINE_URL,
-    KLINE_LIMIT, REQUEST_RETRIES, TENCENT_RATE_LIMIT, SINA_RATE_LIMIT,
+    CODES_FILE,
+    DATE_RAW_DIR,
+    KLINE_COLUMNS,
+    KLINE_LIMIT,
+    SINA_KLINE_URL,
+    SINA_RATE_LIMIT,
+    TENCENT_KLINE_URL,
+    TENCENT_RATE_LIMIT,
+    UPDATE_LOG,
 )
 from stocklight.utils import (
-    http_get, http_get_json, ensure_dir, read_csv, write_csv,
-    safe_float, safe_int, setup_logger, build_tencent_code, build_sina_code,
+    build_sina_code,
+    build_tencent_code,
     confirm_y,
+    ensure_dir,
+    http_get,
+    http_get_json,
+    read_csv,
+    safe_float,
+    safe_int,
+    setup_logger,
+    write_csv,
 )
-
 
 logger = setup_logger("kline_update", UPDATE_LOG)
 
@@ -185,7 +198,6 @@ def process_stock(code, incremental):
             logger.info(f"{code}: 已是最新 ({last_date})")
             return "up_to_date"
 
-    count = KLINE_LIMIT if not incremental else None
     raw = fetch_tencent_kline(code, KLINE_LIMIT)
 
     if not raw or len(raw) == 0:
@@ -211,7 +223,6 @@ def process_stock(code, incremental):
     merged = apply_pctchg(merged)
 
     write_csv(csv_path, merged, KLINE_COLUMNS)
-    count_new = len(parsed) if not incremental else len(parsed)
     logger.info(f"{code}: {'全量' if not incremental else '增量'}完成 ({len(merged)}条)")
     return "updated"
 

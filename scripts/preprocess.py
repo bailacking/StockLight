@@ -5,19 +5,25 @@
 import json
 import os
 import sys
-from collections import OrderedDict
 from datetime import datetime
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from stocklight.config import (
-    DATE_RAW_DIR, STOCKS_META_FILE, STOCKS_REALTIME_FILE,
+    DATE_RAW_DIR,
+    KLINE_LIMIT_FRONTEND,
     PREPROCESS_LOG,
-    KLINE_COLUMNS, KLINE_LIMIT_FRONTEND,
+    STOCKS_META_FILE,
+    STOCKS_REALTIME_FILE,
 )
 from stocklight.utils import (
-    read_csv, ensure_dir, safe_float, safe_int, setup_logger,
-    print_progress, confirm_y,
+    confirm_y,
+    ensure_dir,
+    print_progress,
+    read_csv,
+    safe_float,
+    safe_int,
+    setup_logger,
 )
 
 logger = setup_logger("preprocess", PREPROCESS_LOG)
@@ -116,8 +122,6 @@ def process_stock(code, meta_map, realtime_map):
 
     latest = parsed_kline[-1]
     latest_close = latest["close"]
-    all_closes = [k["close"] for k in parsed_kline]
-    rsi6 = calc_rsi(all_closes, 6)
 
     name = meta_map.get(code, "")
     rt = realtime_map.get(code, {})
@@ -221,7 +225,8 @@ def main():
     total = len(csv_files)
     print(f"  待处理: {total} 只股票")
     if not _yes_mode and not confirm_y("按 Y 开始预处理"):
-        print("已取消"); return
+        print("已取消")
+        return
 
     for i, fname in enumerate(csv_files, 1):
         code = fname.replace(".csv", "")
