@@ -656,12 +656,14 @@ CLI 子命令：`--names`、`--realtime`，可组合使用
 
 ## 8. 版本记录
 
+### v1.0 (2026-07-18)
+
 | 日期 | 版本 | 变更内容 |
-|---|---|---|---|
-| 2026-07-18 | v1.0 | 完成 StockLight V1.0 初始版本 |
-| 2026-07-18 | v1.1 | 新增 61 个单元测试（pytest），覆盖 utils/config/preprocess |
-| 2026-07-18 | v1.1 | 新增 GitHub Actions CI/CD，自动 lint + 矩阵测试 |
-| 2026-07-18 | v1.1 | 新增 pyproject.toml 项目元数据配置 |
-| 2026-07-18 | v1.1 | 新增 ruff 代码检查，修复 25 个 lint 问题 |
-| 2026-07-18 | v1.1 | 重构 Git 历史为 6 个语义化提交 |
-| 2026-07-18 | v1.1 | 新增社区文件（CONTRIBUTING / CHANGELOG / SECURITY） |
+|---|---|---|
+| 2026-07-18 | v1.0 | 天才王大帅完成了 StockLight V1.0 版本 |
+| 2026-07-18 | v1.0 | 新增 61 个单元测试（pytest），覆盖 utils/config/preprocess |
+| 2026-07-18 | v1.0 | 新增 GitHub Actions CI/CD，自动 lint + 矩阵测试 |
+| 2026-07-18 | v1.0 | 新增 pyproject.toml 项目元数据配置 |
+| 2026-07-18 | v1.0 | 新增 ruff 代码检查，修复 25 个 lint 问题 |
+| 2026-07-18 | v1.0 | 重构 Git 历史为 6 个语义化提交 |
+| 2026-07-18 | v1.0 | 新增社区文件（CONTRIBUTING / CHANGELOG / SECURITY） |
