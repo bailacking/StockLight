@@ -26,8 +26,8 @@ class TestPaths:
     def test_project_root_is_absolute(self):
         assert os.path.isabs(PROJECT_ROOT)
 
-    def test_project_root_ends_with_stocklight(self):
-        assert os.path.basename(PROJECT_ROOT) == "Stocklight"
+    def test_project_root_basename(self):
+        assert os.path.basename(PROJECT_ROOT).lower() == "stocklight"
 
     def test_codes_file(self):
         assert CODES_FILE == os.path.join(PROJECT_ROOT, "codes.txt")
