@@ -1,5 +1,13 @@
 # StockLight
 
+<p align="center">
+  <img src="https://img.shields.io/badge/Python-3.10+-blue" alt="Python">
+  <img src="https://img.shields.io/badge/License-MIT-green" alt="License">
+  <img src="https://img.shields.io/github/actions/workflow/status/bailacking/StockLight/python-app.yml?branch=main&label=CI" alt="CI">
+  <img src="https://img.shields.io/badge/Ruff-passing-brightgreen" alt="Ruff">
+  <img src="https://img.shields.io/badge/tests-61%20passed-brightgreen" alt="Tests">
+</p>
+
 轻量级 A 股行情分析工具。Python 采集股票日 K 线数据，浏览器展示筛选排序和个股 K 线图。
 
 纯静态前端（HTML + CSS + JS），不依赖数据库和前端框架。
