@@ -648,6 +648,7 @@ CLI 子命令：`--names`、`--realtime`，可组合使用
 - 前端使用纯 HTML + CSS + JavaScript，不引入 Vue、React 等框架
 - 不引入数据库，不实现用户登录、多用户权限和远程公网访问
 - 不提供投资建议，只展示和计算数据
+- 所有源文件必须使用 **UTF-8 without BOM** 编码（含 `.bat` 文件）
 - 不得修改的规则：
   - 采集脚本必须使用 `scripts/stocklight` 公共模块消除重复代码
   - 预处理脚本只读取缓存文件，不直接请求外部接口
@@ -667,3 +668,4 @@ CLI 子命令：`--names`、`--realtime`，可组合使用
 | 2026-07-18 | v1.0 | 新增 ruff 代码检查，修复 25 个 lint 问题 |
 | 2026-07-18 | v1.0 | 重构 Git 历史为 6 个语义化提交 |
 | 2026-07-18 | v1.0 | 新增社区文件（CONTRIBUTING / CHANGELOG / SECURITY） |
+| 2026-07-19 | v1.0 | 统一全部 .bat 文件编码为 UTF-8 without BOM，修复根目录启动程序.bat GBK 编码问题 |
