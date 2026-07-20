@@ -56,15 +56,15 @@ if /i not "%confirm%"=="Y" ( echo 已取消 & pause & goto menu )
 echo.
 echo  [1/3] 全量日K线下载...
 python scripts/kline_update.py --full --yes
-if errorlevel neq 0 ( echo 失败: 日K下载 & pause & goto menu )
+if %errorlevel% neq 0 ( echo 失败: 日K下载 & pause & goto menu )
 echo.
 echo  [2/3] 采集名称 + 实时行情...
 python scripts/fetch_data.py --names --realtime --yes
-if errorlevel neq 0 ( echo 失败: 数据采集 & pause & goto menu )
+if %errorlevel% neq 0 ( echo 失败: 数据采集 & pause & goto menu )
 echo.
 echo  [3/3] 预处理...
 python scripts/preprocess.py --yes
-if errorlevel neq 0 ( echo 失败: 预处理 & pause & goto menu )
+if %errorlevel% neq 0 ( echo 失败: 预处理 & pause & goto menu )
 echo.
 echo ========================================
 echo  初始化完成！请启动服务浏览。
@@ -88,15 +88,15 @@ if /i not "%confirm%"=="Y" ( echo 已取消 & pause & goto menu )
 echo.
 echo  [1/3] 增量日K线更新...
 python scripts/kline_update.py --incremental --yes
-if errorlevel neq 0 ( echo 失败: 日K更新 & pause & goto menu )
+if %errorlevel% neq 0 ( echo 失败: 日K更新 & pause & goto menu )
 echo.
 echo  [2/3] 采集实时行情...
 python scripts/fetch_data.py --realtime --yes
-if errorlevel neq 0 ( echo 失败: 行情采集 & pause & goto menu )
+if %errorlevel% neq 0 ( echo 失败: 行情采集 & pause & goto menu )
 echo.
 echo  [3/3] 预处理...
 python scripts/preprocess.py --yes
-if errorlevel neq 0 ( echo 失败: 预处理 & pause & goto menu )
+if %errorlevel% neq 0 ( echo 失败: 预处理 & pause & goto menu )
 echo.
 echo ========================================
 echo  更新完成！刷新浏览器即可查看。
@@ -111,7 +111,7 @@ echo  增量日K线更新
 echo ========================================
 echo.
 python scripts/kline_update.py --incremental --yes
-if errorlevel neq 0 ( echo 失败 & pause & goto menu )
+if %errorlevel% neq 0 ( echo 失败 & pause & goto menu )
 pause
 goto menu
 
@@ -122,7 +122,7 @@ echo  获取实时行情
 echo ========================================
 echo.
 python scripts/fetch_data.py --realtime --yes
-if errorlevel neq 0 ( echo 失败 & pause & goto menu )
+if %errorlevel% neq 0 ( echo 失败 & pause & goto menu )
 pause
 goto menu
 
@@ -133,7 +133,7 @@ echo  获取股票名称
 echo ========================================
 echo.
 python scripts/fetch_data.py --names --yes
-if errorlevel neq 0 ( echo 失败 & pause & goto menu )
+if %errorlevel% neq 0 ( echo 失败 & pause & goto menu )
 pause
 goto menu
 
@@ -144,6 +144,6 @@ echo  预处理数据
 echo ========================================
 echo.
 python scripts/preprocess.py --yes
-if errorlevel neq 0 ( echo 失败 & pause & goto menu )
+if %errorlevel% neq 0 ( echo 失败 & pause & goto menu )
 pause
 goto menu
