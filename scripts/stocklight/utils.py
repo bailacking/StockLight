@@ -1,6 +1,7 @@
 import csv
 import logging
 import os
+import time
 
 import requests
 
@@ -33,10 +34,16 @@ def build_sina_code(code):
 
 
 def http_get(url, retries=REQUEST_RETRIES, rate=1.0, encoding=None):
-    rate_limit(rate)
     for attempt in range(1, retries + 1):
+        rate_limit(rate)
         try:
             resp = requests.get(url, headers=HTTP_HEADERS, timeout=REQUEST_TIMEOUT)
+            if resp.status_code in (429, 503):
+                if attempt < retries:
+                    wait = 2 ** attempt
+                    print(f"\r  [限频] 收到 {resp.status_code}，{wait}s 后重试 ({attempt}/{retries})  ")
+                    time.sleep(wait)
+                    continue
             resp.raise_for_status()
             if encoding:
                 resp.encoding = encoding
@@ -49,10 +56,16 @@ def http_get(url, retries=REQUEST_RETRIES, rate=1.0, encoding=None):
 
 
 def http_get_json(url, retries=REQUEST_RETRIES, rate=1.0):
-    rate_limit(rate)
     for attempt in range(1, retries + 1):
+        rate_limit(rate)
         try:
             resp = requests.get(url, headers=HTTP_HEADERS, timeout=REQUEST_TIMEOUT)
+            if resp.status_code in (429, 503):
+                if attempt < retries:
+                    wait = 2 ** attempt
+                    print(f"\r  [限频] 收到 {resp.status_code}，{wait}s 后重试 ({attempt}/{retries})  ")
+                    time.sleep(wait)
+                    continue
             resp.raise_for_status()
             return resp.json()
         except requests.RequestException as e:

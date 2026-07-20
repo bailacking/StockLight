@@ -50,21 +50,24 @@ def load_codes():
     return codes
 
 
-def fetch_tencent_kline(code, count=KLINE_LIMIT):
+def fetch_tencent_kline(code, count=KLINE_LIMIT, rate=TENCENT_RATE_LIMIT,
+                        start_date=None, end_date=None):
     tcode = build_tencent_code(code)
-    params = f"{tcode},day,,,{count},qfq"
+    sd = start_date if start_date else ""
+    ed = end_date if end_date else ""
+    params = f"{tcode},day,{sd},{ed},{count},qfq"
     url = f"{TENCENT_KLINE_URL}?param={params}"
     try:
-        data = http_get_json(url, rate=TENCENT_RATE_LIMIT)
+        data = http_get_json(url, rate=rate)
         if not data:
             return None
         stock_data = data.get("data", {}).get(tcode, {})
         klines = stock_data.get("qfqday") or stock_data.get("day")
         if klines and len(klines) > 0:
             return klines
-        params_raw = f"{tcode},day,,,{count},"
+        params_raw = f"{tcode},day,{sd},{ed},{count},"
         url_raw = f"{TENCENT_KLINE_URL}?param={params_raw}"
-        data_raw = http_get_json(url_raw, rate=TENCENT_RATE_LIMIT)
+        data_raw = http_get_json(url_raw, rate=rate)
         if data_raw:
             stock_data_raw = data_raw.get("data", {}).get(tcode, {})
             klines_raw = stock_data_raw.get("day")
@@ -182,7 +185,7 @@ def apply_pctchg(rows):
     return rows
 
 
-def process_stock(code, incremental):
+def process_stock(code, incremental, rate=TENCENT_RATE_LIMIT):
     csv_path = os.path.join(DATE_RAW_DIR, f"{code}.csv")
     existing = []
     last_date = None
@@ -198,7 +201,7 @@ def process_stock(code, incremental):
             logger.info(f"{code}: 已是最新 ({last_date})")
             return "up_to_date"
 
-    raw = fetch_tencent_kline(code, KLINE_LIMIT)
+    raw = fetch_tencent_kline(code, KLINE_LIMIT, rate=rate)
 
     if not raw or len(raw) == 0:
         if not incremental:
@@ -212,6 +215,17 @@ def process_stock(code, incremental):
             return "failed"
 
     parsed = parse_tencent_kline(raw, code)
+
+    if not incremental and parsed and parsed[0]["date"] > "2023-01-01":
+        from datetime import datetime, timedelta
+        end_dt = datetime.strptime(parsed[0]["date"], "%Y-%m-%d") - timedelta(days=1)
+        end_date = end_dt.strftime("%Y-%m-%d")
+        raw2 = fetch_tencent_kline(code, KLINE_LIMIT, rate=rate,
+                                   start_date="2023-01-01", end_date=end_date)
+        if raw2:
+            parsed2 = parse_tencent_kline(raw2, code)
+            if parsed2:
+                parsed = parsed2 + parsed
 
     if incremental and last_date:
         parsed = [r for r in parsed if r["date"] > last_date]
@@ -232,10 +246,16 @@ def main():
     parser.add_argument("--full", action="store_true", help="全量采集")
     parser.add_argument("--incremental", action="store_true", default=True, help="增量更新")
     parser.add_argument("--yes", action="store_true", help="跳过确认提示")
+    parser.add_argument("--rate", type=float, default=None,
+                        help="腾讯接口请求间隔(秒)，默认 1.0。例: --rate 0.6 表示 0.6秒/次")
     args = parser.parse_args()
 
     if args.full:
         args.incremental = False
+
+    tencent_rate = args.rate if args.rate is not None else TENCENT_RATE_LIMIT
+    if args.rate is not None:
+        print(f"  腾讯限速: {tencent_rate}s/次 (CLI 覆盖)")
 
     ensure_dir(DATE_RAW_DIR)
     codes = load_codes()
@@ -243,18 +263,19 @@ def main():
     print(f"\n【日K数据 - {mode}】")
     print(f"  股票数量: {len(codes)}")
     print(f"  数据目录: {DATE_RAW_DIR}")
+    print(f"  腾讯限速: {tencent_rate}s/次")
     if not args.yes and not confirm_y("按 Y 开始采集"):
         print("已取消")
         return
 
-    logger.info(f"开始{mode}，共{len(codes)}只股票")
+    logger.info(f"开始{mode}，共{len(codes)}只股票，腾讯限速{tencent_rate}s/次")
 
     stats = {"updated": 0, "up_to_date": 0, "no_new_data": 0, "skipped": 0, "failed": 0}
     total = len(codes)
 
     for i, code in enumerate(codes, 1):
         try:
-            result = process_stock(code, args.incremental)
+            result = process_stock(code, args.incremental, rate=tencent_rate)
             stats[result] = stats.get(result, 0) + 1
         except Exception as e:
             logger.error(f"{code}: 异常 - {e}")

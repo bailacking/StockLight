@@ -24,12 +24,12 @@ TENCENT_KLINE_URL = "https://ifzq.gtimg.cn/appstock/app/fqkline/get"
 TENCENT_REALTIME_URL = "http://qt.gtimg.cn/q"
 SINA_KLINE_URL = "http://money.finance.sina.com.cn/quotes_service/api/json_v2.php/CN_MarketData.getKLineData"
 
-KLINE_LIMIT = 320
-KLINE_LIMIT_FRONTEND = 260
+KLINE_LIMIT = 1024
+KLINE_LIMIT_FRONTEND = 1024
 
 REQUEST_RETRIES = 3
 REQUEST_TIMEOUT = 15
-TENCENT_RATE_LIMIT = 1.0
+TENCENT_RATE_LIMIT = 0.5
 SINA_RATE_LIMIT = 1.5
 
 HTTP_HEADERS = {

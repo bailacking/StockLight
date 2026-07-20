@@ -61,13 +61,13 @@ class TestConstants:
         assert "pe_ttm" in REALTIME_COLUMNS
 
     def test_kline_limits(self):
-        assert KLINE_LIMIT == 320
-        assert KLINE_LIMIT_FRONTEND == 260
+        assert KLINE_LIMIT == 1024
+        assert KLINE_LIMIT_FRONTEND == 1024
 
     def test_request_params(self):
         assert REQUEST_RETRIES == 3
         assert REQUEST_TIMEOUT == 15
-        assert TENCENT_RATE_LIMIT == 1.0
+        assert TENCENT_RATE_LIMIT == 0.5
         assert SINA_RATE_LIMIT == 1.5
 
     def test_http_headers(self):
